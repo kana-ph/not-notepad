@@ -7,6 +7,13 @@ public class TextFile {
     private String text;
     private Path path;
 
+    public TextFile() { }
+
+    public TextFile(String text, Path path) {
+        this.text = text;
+        this.path = path;
+    }
+
     public String getText() {
         return text;
     }
