@@ -146,6 +146,7 @@ public class Notepad extends Application implements EventHandler<ActionEvent> {
         } else if (event.getSource() == aboutMenuItem) {
             Alert aboutDialog = new Alert(Alert.AlertType.INFORMATION);
             aboutDialog.setTitle("About Not Notepad");
+            aboutDialog.setHeaderText("This is Not Notepad but a Notepad clone!");
 
             var textPane = new TextFlow();
             textPane.getChildren()
