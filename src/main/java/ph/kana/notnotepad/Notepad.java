@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -25,6 +27,8 @@ public class Notepad extends Application implements EventHandler<ActionEvent> {
     private TextArea textArea = new TextArea();
     private MenuItem openMenuItem = new MenuItem("_Open");
     private MenuItem saveMenuItem = new MenuItem("_Save");
+    private MenuItem aboutMenuItem = new MenuItem("_About");
+    private Hyperlink sourceCodeLink = new Hyperlink("https://github.com/kana0011/not-notepad");
 
     public static void main(String[] args) {
         launch(args);
@@ -72,9 +76,18 @@ public class Notepad extends Application implements EventHandler<ActionEvent> {
         editMenu.getItems()
             .addAll(cutMenuItem, copyMenuItem, pasteMenuItem);
 
+        aboutMenuItem.setMnemonicParsing(true);
+        aboutMenuItem.setAccelerator(keyCombination("F1"));
+        aboutMenuItem.setOnAction(this);
+
+        sourceCodeLink.setOnAction(this);
+        var helpMenu = new Menu("_Help");
+        helpMenu.getItems()
+            .add(aboutMenuItem);
+
         var menuBar = new MenuBar();
         menuBar.getMenus()
-            .addAll(fileMenu, editMenu);
+            .addAll(fileMenu, editMenu, helpMenu);
         addToAnchorPane(pane, menuBar, 0.0, 0.0, null, 0.0);
 
         var scene = new Scene(pane, 800.0, 600.0);
@@ -130,6 +143,26 @@ public class Notepad extends Application implements EventHandler<ActionEvent> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (event.getSource() == aboutMenuItem) {
+            Alert aboutDialog = new Alert(Alert.AlertType.INFORMATION);
+            aboutDialog.setTitle("About Not Notepad");
+            aboutDialog.setHeaderText("This is Not Notepad but a Notepad clone");
+            aboutDialog.setContentText("For god class demonstration.\n\nSource code at https://github.com/kana0011/not-notepad");
+
+            var textPane = new TextFlow();
+            textPane.getChildren()
+                .addAll(
+                    new Text("For god class demonstration.\n\n"),
+                    new Text("Source code at "),
+                    sourceCodeLink
+                );
+            textPane.setLineSpacing(1.5);
+            aboutDialog.getDialogPane()
+                .setContent(textPane);
+            aboutDialog.showAndWait();
+        } else if (event.getSource() == sourceCodeLink) {
+            getHostServices()
+                .showDocument("https://github.com/kana0011/not-notepad");
         }
     }
 
